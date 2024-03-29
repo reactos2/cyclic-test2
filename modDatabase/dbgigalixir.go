@@ -34,7 +34,8 @@ func (instSelf *CDBGiga) Initialize(dsn string) error {
 	result := db.First(&modData.SystemKVData{Name: "key1"})
 
 	if result.Error != nil {
-		err = modData.SystemKVData{Name: "key1", ValueInt: 0}.Save(instSelf.dbinst)
+		err = instSelf.dbinst.Save(&modData.SystemKVData{Name: "key1", ValueInt: 0}).Error
+		//err = modData.SystemKVData{Name: "key1", ValueInt: 0}.Save()
 		if err != nil {
 			return err
 		}
@@ -48,7 +49,11 @@ func (instSelf *CDBGiga) Initialize(dsn string) error {
 func (instSelf *CDBGiga) AddVisitTimes() (error, int) {
 	data1 := modData.SystemKVData{Name: "key1"}
 	result := instSelf.dbinst.First(&data1)
+	if result.Error != nil {
+		return result.Error, 0
+	}
 	data1.ValueInt += 1
-	err := data1.Save(instSelf.dbinst)
+	err := instSelf.dbinst.Save(&data1).Error
+	//err := data1.Save(instSelf.dbinst)
 	return err, data1.ValueInt
 }
