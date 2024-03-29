@@ -18,7 +18,7 @@ func main() {
 		fmt.Println(err)
 		return
 	} else {
-    fmt.Println("db init successful")
+    	fmt.Println("db init successful")
 	}
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
