@@ -6,6 +6,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
+	"cyclictest2/modDatabase"
 )
 
 const dsn = "postgresql://3d091b03-47ef-4aca-b9ea-b5869d0cde02-user:pw-b1686ed8-8893-4fed-b760-189d69e246a5@postgres-free-tier-v2020.gigalixir.com:5432/3d091b03-47ef-4aca-b9ea-b5869d0cde02"
@@ -29,5 +31,10 @@ func main() {
 }
 
 func handleHello2(w http.ResponseWriter, r *http.Request) {
-  w.Write([]byte("hello2"))
+	err, vtimes1 := modDatabase.GetSingleGiga().AddVisitTimes()
+	if err != nil {
+		w.Write([]byte("hello2, system internal error"))
+	} else {
+    w.Write([]byte(fmt.Sprintf("hello2, %d", vtimes1)))
+	}
 }
